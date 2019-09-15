@@ -38,7 +38,7 @@ Get all students in a class
 
 Get all teachers in a class
 
-### ```GET /schools````
+### ```GET /schools```
 
 Get all schools
 
