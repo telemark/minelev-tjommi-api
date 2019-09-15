@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "name": "minelev-tjommi-api",
+  "scope": "minelev",
+  "alias": [
+    "tjommi.minelev.no"
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "JWT_SECRET": "@minelev-jwt-secret",
+    "PAPERTRAIL_HOSTNAME": "minelev",
+    "PAPERTRAIL_HOST": "@tfk-papertrail-host",
+    "PAPERTRAIL_PORT": "@tfk-papertrail-port"
+  },
+  "builds": [
+    {
+      "src": "/*.md",
+      "use": "@now/md"
+    },
+    {
+      "src": "/api/*.js",
+      "use": "@now/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/schools",
+      "dest": "/api/schools.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/README.html"
+    }
+  ]
+}

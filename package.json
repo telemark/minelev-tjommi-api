@@ -1,0 +1,44 @@
+{
+  "name": "minelev-tjommi-api",
+  "version": "1.0.0",
+  "description": "Buddy compatible api service for MinElev",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && npm audit",
+    "test-offline": "standard",
+    "coverage": "nyc ava",
+    "coveralls": "nyc ava && nyc report --reporter=lcov && cat coverage/lcov.info | coveralls",
+    "standard-fix": "standard --fix",
+    "dev": "now dev",
+    "deploy": "npm test && now --prod",
+    "refresh": "rm -rf node_modules && rm package-lock.json && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/telemark/minelev-tjommi-api.git"
+  },
+  "keywords": [
+    "minelev",
+    "api",
+    "buddy",
+    "tjommi"
+  ],
+  "author": "Geir Gåsodden <geir.gasodden@pythonia.no> (https://github.com/zrrrzzt)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/telemark/minelev-tjommi-api/issues"
+  },
+  "homepage": "https://github.com/telemark/minelev-tjommi-api#readme",
+  "dependencies": {
+    "jsonwebtoken": "8.5.1",
+    "mongodb": "3.3.2",
+    "winston": "2.4.4",
+    "winston-papertrail": "1.0.5"
+  },
+  "devDependencies": {
+    "ava": "2.3.0",
+    "coveralls": "3.0.6",
+    "nyc": "14.1.1",
+    "standard": "14.3.0"
+  }
+}
