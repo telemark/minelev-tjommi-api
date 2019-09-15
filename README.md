@@ -18,13 +18,18 @@ Get a specific student
 
 Get all contact teacher for a given student
 
+### ```GET /teachers```
+
+Get all teachers
+
+### ```GET /teachers/{id}```
+
+Get a given teacher
+
 ### ```GET /teachers/{id}/contactclasses```
 
 Get all contact classes for a given teacher
 
-### ```GET /teachers/all```
-
-Get all teachers
 
 ### ```GET /classes/{id}/students```
 
@@ -37,6 +42,10 @@ Get all teachers in a class
 ### ```GET /schools````
 
 Get all schools
+
+### ```GET /schools/{id}```
+
+Get a given school
 
 ### ```GET /schools/{id}/teachers```
 

@@ -1,7 +1,8 @@
 module.exports = async (request, response) => {
+  const query = await request.query
   const url = request.url
-  const schoolId = url.split('/')[2]
+  const username = url.split('/')[2]
   const action = url.split('/')[3]
-  const data = { schoolId, action }
+  const data = { ...query, username, action }
   response.json(data)
 }

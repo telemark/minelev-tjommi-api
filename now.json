@@ -24,8 +24,32 @@
   ],
   "routes": [
     {
-      "src": "/api/schools",
+      "src": "/classes/(.*)",
+      "dest": "/api/classes.js"
+    },
+    {
+      "src": "/schools",
       "dest": "/api/schools.js"
+    },
+    {
+      "src": "/schools/(.*)",
+      "dest": "/api/schools.js"
+    },
+    {
+      "src": "/students",
+      "dest": "/api/students.js"
+    },
+    {
+      "src": "/students/(.*)",
+      "dest": "/api/students.js"
+    },
+    {
+      "src": "/teachers",
+      "dest": "/api/teachers.js"
+    },
+    {
+      "src": "/teachers/(.*)",
+      "dest": "/api/teachers.js"
     },
     {
       "src": "/(.*)",
