@@ -7,7 +7,10 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "JWT_SECRET": "@minelev-jwt-secret",
+    "JWT_SECRET": "@minelev-tjommi-secret",
+    "MONGODB_CONNECTION": "@db-cosmos-dev-connection",
+    "MONGODB_COLLECTION": "tjommi",
+    "MONGODB_NAME": "@db-cosmos-dev-db-name",
     "PAPERTRAIL_HOSTNAME": "minelev",
     "PAPERTRAIL_HOST": "@tfk-papertrail-host",
     "PAPERTRAIL_PORT": "@tfk-papertrail-port"

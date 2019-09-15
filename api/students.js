@@ -6,6 +6,8 @@ module.exports = async (request, response) => {
   const username = url.split('/')[2]
   const action = url.split('/')[3]
   let query = false
+  const db = await mongo()
+  const tjommi = db.collection(process.env.MONGODB_COLLECTION)
 
   if (name) {
     query = {
@@ -25,8 +27,6 @@ module.exports = async (request, response) => {
   }
 
   if (query) {
-    const db = await mongo()
-    const tjommi = db.collection(process.env.MONGODB_COLLECTION)
     const data = await tjommi.find(query).toArray()
     response.json(data)
   } else {

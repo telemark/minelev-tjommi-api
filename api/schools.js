@@ -5,6 +5,8 @@ module.exports = async (request, response) => {
   const schoolId = url.split('/')[2]
   const action = url.split('/')[3]
   let query = false
+  const db = await mongo()
+  const tjommi = db.collection(process.env.MONGODB_COLLECTION)
 
   if (!schoolId && !action) {
     query = {
@@ -12,18 +14,20 @@ module.exports = async (request, response) => {
     }
   } else if (schoolId && !action) {
     query = {
-      id: schoolId,
+      schoolId: schoolId,
       type: 'skole'
     }
   } else if (schoolId && action && ['students', 'teachers'].includes(action)) {
+    const schools = await tjommi.find({
+      schoolId: schoolId,
+      type: 'skole'
+    }).toArray()
     query = {
-      groupIds: schoolId,
+      schoolIds: schools[0].id,
       type: action === 'students' ? 'student' : 'teacher'
     }
   }
   if (query) {
-    const db = await mongo()
-    const tjommi = db.collection(process.env.MONGODB_COLLECTION)
     const data = await tjommi.find(query).toArray()
     response.json(data)
   } else {
