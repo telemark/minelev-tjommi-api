@@ -46,12 +46,30 @@ const handleStudents = async (request, response) => {
       username: username
     }
     const students = await tjommi.find(studentQuery).toArray()
-    const { kontaktlarergruppeIds } = students[0]
-    const teacherQuery = {
-      type: 'teacher',
-      groupIds: kontaktlarergruppeIds[0]
+    const { kontaktlarergruppeIds, ordenIds, atferdIds } = students[0]
+    const kontaktIds = [...kontaktlarergruppeIds, ...ordenIds, ...atferdIds]
+    const teacherQuery = groupId => {
+      return {
+        type: 'teacher',
+        groupIds: groupId
+      }
     }
-    const teachers = await tjommi.find(teacherQuery).toArray()
+    const queries = kontaktIds.map(teacherQuery)
+    const jobs = queries.map(query => tjommi.find(query).toArray())
+    const results = await Promise.all(jobs)
+    const allTeachers = results.reduce((accumulator, current) => {
+      if (current.length > 0) {
+        accumulator.push(...current)
+      }
+      return accumulator
+    }, [])
+    const teachers = allTeachers.reduce((accumulator, current) => {
+      const ids = accumulator.map(item => item.id)
+      if (!ids.includes(current.id)) {
+        accumulator.push(current)
+      }
+      return accumulator
+    }, [])
     response.json(teachers)
   } else {
     response.status(400)
