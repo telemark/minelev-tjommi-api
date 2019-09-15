@@ -1,6 +1,7 @@
 const mongo = require('../lib/mongo')
+const withTokenAuth = require('../lib/token-auth')
 
-module.exports = async (request, response) => {
+const handleStudents = async (request, response) => {
   const { name } = await request.query
   const url = request.url
   const username = url.split('/')[2]
@@ -34,3 +35,5 @@ module.exports = async (request, response) => {
     response.send('No query created')
   }
 }
+
+module.exports = (request, response) => withTokenAuth(request, response, handleStudents)

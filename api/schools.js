@@ -1,13 +1,13 @@
 const mongo = require('../lib/mongo')
+const withTokenAuth = require('../lib/token-auth')
 
-module.exports = async (request, response) => {
+const handleSchools = async (request, response) => {
   const url = request.url
   const schoolId = url.split('/')[2]
   const action = url.split('/')[3]
   let query = false
   const db = await mongo()
   const tjommi = db.collection(process.env.MONGODB_COLLECTION)
-
   if (!schoolId && !action) {
     query = {
       type: 'skole'
@@ -35,3 +35,5 @@ module.exports = async (request, response) => {
     response.send('No query created')
   }
 }
+
+module.exports = (request, response) => withTokenAuth(request, response, handleSchools)
