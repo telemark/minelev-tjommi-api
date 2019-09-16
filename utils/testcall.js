@@ -16,6 +16,9 @@
   // const url = 'http://localhost:3000/classes/{id}/students'
   // const url = 'http://localhost:3000/classes/{id}/teachers'
   const url = 'http://localhost:3000/schools'
+  // const url = 'http://localhost:3000/schools/{id}'
+  // const url = 'http://localhost:3000/schools/{id}/teachers'
+  // const url = 'http://localhost:3000/schools/{id}/students'
 
   try {
     const { data } = await axios.get(url)
