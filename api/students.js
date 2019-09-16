@@ -41,6 +41,7 @@ const handleStudents = async (request, response) => {
     }
     response.json(data.filter(isMyStudent))
   } else if (username && action && ['contactteachers'].includes(action)) {
+    // TODO: Validate this covers everything to get contactteachers
     const studentQuery = {
       type: 'student',
       username: username
