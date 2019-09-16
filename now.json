@@ -27,6 +27,10 @@
   ],
   "routes": [
     {
+      "src": "/classes",
+      "dest": "/api/classes.js"
+    },
+    {
       "src": "/classes/(.*)",
       "dest": "/api/classes.js"
     },

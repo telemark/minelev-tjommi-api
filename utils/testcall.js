@@ -11,6 +11,10 @@
   // const url = 'http://localhost:3000/teachers'
   // const url = 'http://localhost:3000/teachers/{id}'
   // const url = 'http://localhost:3000/teachers/{id}/contactclasses'
+  // const url = 'http://localhost:3000/classes'
+  // const url = 'http://localhost:3000/classes/{id}'
+  // const url = 'http://localhost:3000/classes/{id}/students'
+  // const url = 'http://localhost:3000/classes/{id}/teachers'
   const url = 'http://localhost:3000/schools'
 
   try {

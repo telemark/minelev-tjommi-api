@@ -9,6 +9,19 @@ const handleClasses = async (request, response) => {
   const db = await mongo()
   const tjommi = db.collection(process.env.MONGODB_COLLECTION)
 
+  if (!classId && !action) {
+    query = {
+      type: 'basisgruppe'
+    }
+  }
+
+  if (classId && !action) {
+    query = {
+      type: 'basisgruppe',
+      groupId: classId
+    }
+  }
+
   if (classId && action && ['students', 'teachers'].includes(action)) {
     const classes = await tjommi.find({
       type: 'basisgruppe',
