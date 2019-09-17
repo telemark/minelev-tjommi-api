@@ -1,13 +1,11 @@
-const mongo = require('../lib/mongo')
 const withTokenAuth = require('../lib/token-auth')
+const getData = require('../lib/get-data')
 
 const handleClasses = async (request, response) => {
   const url = request.url
   const classId = url.split('/')[2]
   const action = url.split('/')[3]
   let query = false
-  const db = await mongo()
-  const tjommi = db.collection(process.env.MONGODB_COLLECTION)
 
   if (!classId && !action) {
     query = {
@@ -23,10 +21,10 @@ const handleClasses = async (request, response) => {
   }
 
   if (classId && action && ['students', 'teachers'].includes(action)) {
-    const classes = await tjommi.find({
+    const classes = await getData({
       type: 'basisgruppe',
       groupId: classId
-    }).toArray()
+    })
     query = {
       groupIds: classes[0].id,
       type: action === 'students' ? 'student' : 'teacher'
@@ -34,7 +32,7 @@ const handleClasses = async (request, response) => {
   }
 
   if (query) {
-    const data = await tjommi.find(query).toArray()
+    const data = await getData(query)
     response.json(data)
   } else {
     response.status(400)

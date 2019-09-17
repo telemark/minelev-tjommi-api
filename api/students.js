@@ -1,5 +1,5 @@
-const mongo = require('../lib/mongo')
 const withTokenAuth = require('../lib/token-auth')
+const getData = require('../lib/get-data')
 
 const handleStudents = async (request, response) => {
   const { caller } = request.token
@@ -7,18 +7,16 @@ const handleStudents = async (request, response) => {
   const url = request.url
   const username = url.split('/')[2]
   const action = url.split('/')[3]
-  const db = await mongo()
-  const tjommi = db.collection(process.env.MONGODB_COLLECTION)
 
   if (name) {
-    const teachers = await tjommi.find({ type: 'teacher', username: caller }).toArray()
+    const teachers = await getData({ type: 'teacher', username: caller })
     const teacher = teachers[0]
     const teachersGroups = new Set(teacher.groupIds)
     const query = {
       type: 'student',
       fullName: { $regex: name, $options: 'i' }
     }
-    const data = await tjommi.find(query).toArray()
+    const data = await getData(query)
     const isMyStudent = student => {
       const studentsGroups = new Set(student.groupIds)
       const intersection = new Set([...teachersGroups].filter(groupId => studentsGroups.has(groupId)))
@@ -26,14 +24,14 @@ const handleStudents = async (request, response) => {
     }
     response.json(data.filter(isMyStudent))
   } else if (username && !action) {
-    const teachers = await tjommi.find({ type: 'teacher', username: caller }).toArray()
+    const teachers = await getData({ type: 'teacher', username: caller })
     const teacher = teachers[0]
     const teachersGroups = new Set(teacher.groupIds)
     const query = {
       type: 'student',
       username: username
     }
-    const data = await tjommi.find(query).toArray()
+    const data = await getData(query)
     const isMyStudent = student => {
       const studentsGroups = new Set(student.groupIds)
       const intersection = new Set([...teachersGroups].filter(groupId => studentsGroups.has(groupId)))
@@ -46,7 +44,7 @@ const handleStudents = async (request, response) => {
       type: 'student',
       username: username
     }
-    const students = await tjommi.find(studentQuery).toArray()
+    const students = await getData(studentQuery)
     const { kontaktlarergruppeIds, ordenIds, atferdIds } = students[0]
     const kontaktIds = [...kontaktlarergruppeIds, ...ordenIds, ...atferdIds]
     const teacherQuery = groupId => {
@@ -56,7 +54,7 @@ const handleStudents = async (request, response) => {
       }
     }
     const queries = kontaktIds.map(teacherQuery)
-    const jobs = queries.map(query => tjommi.find(query).toArray())
+    const jobs = queries.map(query => getData(query))
     const results = await Promise.all(jobs)
     const allTeachers = results.reduce((accumulator, current) => {
       if (current.length > 0) {

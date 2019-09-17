@@ -1,13 +1,11 @@
-const mongo = require('../lib/mongo')
 const withTokenAuth = require('../lib/token-auth')
+const getData = require('../lib/get-data')
 
 const handleSchools = async (request, response) => {
   const url = request.url
   const schoolId = url.split('/')[2]
   const action = url.split('/')[3]
   let query = false
-  const db = await mongo()
-  const tjommi = db.collection(process.env.MONGODB_COLLECTION)
   if (!schoolId && !action) {
     query = {
       type: 'skole'
@@ -18,17 +16,17 @@ const handleSchools = async (request, response) => {
       type: 'skole'
     }
   } else if (schoolId && action && ['students', 'teachers'].includes(action)) {
-    const schools = await tjommi.find({
+    const schools = await getData({
       schoolId: schoolId,
       type: 'skole'
-    }).toArray()
+    })
     query = {
       schoolIds: schools[0].id,
       type: action === 'students' ? 'student' : 'teacher'
     }
   }
   if (query) {
-    const data = await tjommi.find(query).toArray()
+    const data = await getData(query)
     response.json(data)
   } else {
     response.status(400)
