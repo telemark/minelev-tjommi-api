@@ -1,5 +1,6 @@
 const withTokenAuth = require('../lib/token-auth')
 const getData = require('../lib/get-data')
+const appendMainGroupName = require('../lib/append-main-group-name')
 
 const handleStudents = async (request, response) => {
   const { caller } = request.token
@@ -22,7 +23,9 @@ const handleStudents = async (request, response) => {
       const intersection = new Set([...teachersGroups].filter(groupId => studentsGroups.has(groupId)))
       return intersection.size > 0
     }
-    response.json(data.filter(isMyStudent))
+    const myStudents = data.filter(isMyStudent)
+    const students = await appendMainGroupName(myStudents)
+    response.json(students)
   } else if (username && !action) {
     const teachers = await getData({ type: 'teacher', username: caller })
     const teacher = teachers[0]
@@ -37,7 +40,9 @@ const handleStudents = async (request, response) => {
       const intersection = new Set([...teachersGroups].filter(groupId => studentsGroups.has(groupId)))
       return intersection.size > 0
     }
-    response.json(data.filter(isMyStudent))
+    const myStudents = data.filter(isMyStudent)
+    const students = await appendMainGroupName(myStudents)
+    response.json(students)
   } else if (username && action && ['contactteachers'].includes(action)) {
     // TODO: Validate this covers everything to get contactteachers
     const studentQuery = {
