@@ -1,5 +1,6 @@
 const withTokenAuth = require('../lib/token-auth')
 const getData = require('../lib/get-data')
+const appendMainGroupName = require('../lib/append-main-group-name')
 
 const handleClasses = async (request, response) => {
   const url = request.url
@@ -32,7 +33,10 @@ const handleClasses = async (request, response) => {
   }
 
   if (query) {
-    const data = await getData(query)
+    let data = await getData(query)
+    if (action === 'students') {
+      data = await appendMainGroupName(data)
+    }
     response.json(data)
   } else {
     response.status(400)
