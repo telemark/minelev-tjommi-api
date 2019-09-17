@@ -1,6 +1,7 @@
 const withTokenAuth = require('../lib/token-auth')
 const getData = require('../lib/get-data')
 const appendMainGroupName = require('../lib/append-main-group-name')
+const logger = require('../lib/logger')
 
 const handleStudents = async (request, response) => {
   const { caller } = request.token
@@ -10,6 +11,7 @@ const handleStudents = async (request, response) => {
   const action = url.split('/')[3]
 
   if (name) {
+    logger('info', ['api', 'students', 'search by name', 'start'])
     const teachers = await getData({ type: 'teacher', username: caller })
     const teacher = teachers[0]
     const teachersGroups = new Set(teacher.groupIds)
