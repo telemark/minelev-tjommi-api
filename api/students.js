@@ -1,6 +1,7 @@
 const withTokenAuth = require('../lib/token-auth')
 const getData = require('../lib/get-data')
 const appendMainGroupName = require('../lib/append-main-group-name')
+const appendGroups = require('../lib/append-groups')
 const logger = require('../lib/logger')
 
 const handleStudents = async (request, response) => {
@@ -11,7 +12,7 @@ const handleStudents = async (request, response) => {
   const action = url.split('/')[3]
 
   if (name) {
-    logger('info', ['api', 'students', 'search by name', 'start'])
+    logger('info', ['api', 'students', 'search by name', 'caller', caller, 'start'])
     const teachers = await getData({ type: 'teacher', username: caller })
     const teacher = teachers[0]
     const teachersGroups = new Set(teacher.groupIds)
@@ -29,6 +30,7 @@ const handleStudents = async (request, response) => {
     const students = await appendMainGroupName(myStudents)
     response.json(students)
   } else if (username && !action) {
+    logger('info', ['api', 'students', 'search by username', username, 'caller', caller, 'start'])
     const teachers = await getData({ type: 'teacher', username: caller })
     const teacher = teachers[0]
     const teachersGroups = new Set(teacher.groupIds)
@@ -44,7 +46,8 @@ const handleStudents = async (request, response) => {
     }
     const myStudents = data.filter(isMyStudent)
     const students = await appendMainGroupName(myStudents)
-    response.json(students)
+    const studentsWithGroups = await appendGroups(students)
+    response.json(studentsWithGroups)
   } else if (username && action && ['contactteachers'].includes(action)) {
     // TODO: Validate this covers everything to get contactteachers
     const studentQuery = {
