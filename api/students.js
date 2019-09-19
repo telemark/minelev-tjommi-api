@@ -14,17 +14,17 @@ const handleStudents = async (request, response) => {
     logger('info', ['api', 'students', 'search by name', 'caller', caller, 'start'])
     const teachers = await getData({ type: 'teacher', username: caller })
     const teacher = teachers[0]
-
     const query = {
       type: 'student',
       fullName: { $regex: name.replace('*', '.*'), $options: 'i' },
       groupIds: { $in: teacher.groupIds }
     }
 
-    logger('info', ['api', 'students', 'search by name', 'query', query])
+    logger('info', ['api', 'students', 'search by name', name])
     const data = await getData(query)
-    logger('info', ['api', 'students', 'search by name', 'data', data])
-    response.json(data)
+
+    logger('info', ['api', 'students', 'search by name', 'data', data.length])
+    response.json(data.map(repackStudent))
   } else if (username && !action) {
     logger('info', ['api', 'students', 'search by username', username, 'caller', caller, 'start'])
     const teachers = await getData({ type: 'teacher', username: caller })

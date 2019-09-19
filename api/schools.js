@@ -1,6 +1,5 @@
 const withTokenAuth = require('../lib/token-auth')
 const getData = require('../lib/get-data')
-const appendMainGroupName = require('../lib/append-main-group-name')
 const repackStudent = require('../lib/repack-student')
 
 const handleSchools = async (request, response) => {
@@ -30,7 +29,6 @@ const handleSchools = async (request, response) => {
   if (query) {
     let data = await getData(query)
     if (action === 'students') {
-      data = await appendMainGroupName(data)
       data = data.map(repackStudent)
     }
     response.json(data)
