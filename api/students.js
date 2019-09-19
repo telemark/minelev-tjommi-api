@@ -14,19 +14,17 @@ const handleStudents = async (request, response) => {
     logger('info', ['api', 'students', 'search by name', 'caller', caller, 'start'])
     const teachers = await getData({ type: 'teacher', username: caller })
     const teacher = teachers[0]
-    const teachersGroups = new Set(teacher.groupIds)
+
     const query = {
       type: 'student',
-      fullName: { $regex: name.replace('*', '.*'), $options: 'i' }
+      fullName: { $regex: name.replace('*', '.*'), $options: 'i' },
+      groupIds: { $in: teacher.groupIds }
     }
+
+    logger('info', ['api', 'students', 'search by name', 'query', query])
     const data = await getData(query)
-    const isMyStudent = student => {
-      const studentsGroups = new Set(student.groupIds)
-      const intersection = new Set([...teachersGroups].filter(groupId => studentsGroups.has(groupId)))
-      return intersection.size > 0
-    }
-    const myStudents = data.filter(isMyStudent)
-    response.json(myStudents.map(repackStudent))
+    logger('info', ['api', 'students', 'search by name', 'data', data])
+    response.json(data)
   } else if (username && !action) {
     logger('info', ['api', 'students', 'search by username', username, 'caller', caller, 'start'])
     const teachers = await getData({ type: 'teacher', username: caller })
