@@ -19,7 +19,7 @@ const handleStudents = async (request, response) => {
     const teachersGroups = new Set(teacher.groupIds)
     const query = {
       type: 'student',
-      fullName: { $regex: name, $options: 'i' }
+      fullName: { $regex: name.replace("*", ".*"), $options: 'i' }
     }
     const data = await getData(query)
     const isMyStudent = student => {
