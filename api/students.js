@@ -1,6 +1,5 @@
 const withTokenAuth = require('../lib/token-auth')
 const getData = require('../lib/get-data')
-const appendMainGroupName = require('../lib/append-main-group-name')
 const appendGroups = require('../lib/append-groups')
 const repackStudent = require('../lib/repack-student')
 const logger = require('../lib/logger')
@@ -28,8 +27,7 @@ const handleStudents = async (request, response) => {
       return intersection.size > 0
     }
     const myStudents = data.filter(isMyStudent)
-    const students = await appendMainGroupName(myStudents)
-    response.json(students.map(repackStudent))
+    response.json(myStudents.map(repackStudent))
   } else if (username && !action) {
     logger('info', ['api', 'students', 'search by username', username, 'caller', caller, 'start'])
     const teachers = await getData({ type: 'teacher', username: caller })
@@ -46,8 +44,7 @@ const handleStudents = async (request, response) => {
       return intersection.size > 0
     }
     const myStudents = data.filter(isMyStudent)
-    const students = await appendMainGroupName(myStudents)
-    const studentsWithGroups = await appendGroups(students)
+    const studentsWithGroups = await appendGroups(myStudents)
     response.json(studentsWithGroups.map(repackStudent))
   } else if (username && action && ['contactteachers'].includes(action)) {
     // TODO: Validate this covers everything to get contactteachers
