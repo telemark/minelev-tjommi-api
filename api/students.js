@@ -1,6 +1,5 @@
 const withTokenAuth = require('../lib/token-auth')
 const getData = require('../lib/get-data')
-const appendGroups = require('../lib/append-groups')
 const repackStudent = require('../lib/repack-student')
 const logger = require('../lib/logger')
 
@@ -18,7 +17,7 @@ const handleStudents = async (request, response) => {
     const teachersGroups = new Set(teacher.groupIds)
     const query = {
       type: 'student',
-      fullName: { $regex: name.replace("*", ".*"), $options: 'i' }
+      fullName: { $regex: name.replace('*', '.*'), $options: 'i' }
     }
     const data = await getData(query)
     const isMyStudent = student => {
@@ -44,8 +43,7 @@ const handleStudents = async (request, response) => {
       return intersection.size > 0
     }
     const myStudents = data.filter(isMyStudent)
-    const studentsWithGroups = await appendGroups(myStudents)
-    response.json(studentsWithGroups.map(repackStudent))
+    response.json(myStudents.map(repackStudent))
   } else if (username && action && ['contactteachers'].includes(action)) {
     // TODO: Validate this covers everything to get contactteachers
     const studentQuery = {
