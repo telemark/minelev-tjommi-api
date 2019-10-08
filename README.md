@@ -108,6 +108,16 @@ Run the deployment script
 $ npm run deploy
 ```
 
+## Run with docker
+
+```
+docker run -d \
+  -p 3000:3000 \
+  -E docker.env \
+  --name tjommi-api \
+  telemark/minelev-tjommi-api
+```
+
 ## Related
 
 - [minelev-web](https://github.com/telemark/minelev-web) web frontend for MinElev
