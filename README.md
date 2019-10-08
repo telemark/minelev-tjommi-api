@@ -113,7 +113,7 @@ $ npm run deploy
 ```
 docker run -d \
   -p 3000:3000 \
-  -E docker.env \
+  --env-file docker.env \
   --name tjommi-api \
   telemark/minelev-tjommi-api
 ```
