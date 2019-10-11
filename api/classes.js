@@ -2,8 +2,10 @@ const withTokenAuth = require('../lib/token-auth')
 const getData = require('../lib/get-data')
 const repackStudent = require('../lib/repack-student')
 const logger = require('../lib/logger')
+const uuid = require('uuid/v4')
 
 const handleClasses = async (request, response) => {
+  const id = uuid()
   try {
     const url = request.url
     const classId = url.split('/')[2]
@@ -45,7 +47,7 @@ const handleClasses = async (request, response) => {
       response.send('No query created')
     }
   } catch (error) {
-    logger('info', ['api', 'classes', 'error', error.message])
+    logger('info', [id, 'api', 'classes', 'error', error.message])
     response.status(500)
     response.status(error.message)
   }

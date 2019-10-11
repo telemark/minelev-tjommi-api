@@ -2,11 +2,13 @@ const withTokenAuth = require('../lib/token-auth')
 const getData = require('../lib/get-data')
 const repackStudent = require('../lib/repack-student')
 const logger = require('../lib/logger')
+const uuid = require('uuid/v4')
 
 const handleTeachers = async (request, response) => {
   const url = request.url
   const username = url.split('/')[2]
   const action = url.split('/')[3]
+  const id = uuid()
 
   if (!username && !action) {
     const query = {
@@ -16,7 +18,7 @@ const handleTeachers = async (request, response) => {
       const data = await getData(query)
       response.json(data)
     } catch (error) {
-      logger('info', ['api', 'teachers', 'error', error.message])
+      logger('info', [id, 'api', 'teachers', username, 'error', error.message])
       response.status(500)
       response.status(error.message)
     }
@@ -29,7 +31,7 @@ const handleTeachers = async (request, response) => {
       const data = await getData(query)
       response.json(data)
     } catch (error) {
-      logger('info', ['api', 'teachers', 'error', error.message])
+      logger('info', [id, 'api', 'teachers', username, 'error', error.message])
       response.status(500)
       response.status(error.message)
     }
@@ -48,7 +50,7 @@ const handleTeachers = async (request, response) => {
       const groups = await getData(groupQuery)
       response.json(groups)
     } catch (error) {
-      logger('info', ['api', 'teachers', 'error', error.message])
+      logger('info', [id, 'api', 'teachers', username, 'error', error.message])
       response.status(500)
       response.status(error.message)
     }
@@ -68,7 +70,7 @@ const handleTeachers = async (request, response) => {
       const students = await getData(studentQuery)
       response.json(students.map(repackStudent))
     } catch (error) {
-      logger('info', ['api', 'teachers', 'error', error.message])
+      logger('info', [id, 'api', 'teachers', username, 'error', error.message])
       response.status(500)
       response.status(error.message)
     }

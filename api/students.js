@@ -2,6 +2,7 @@ const withTokenAuth = require('../lib/token-auth')
 const getData = require('../lib/get-data')
 const repackStudent = require('../lib/repack-student')
 const logger = require('../lib/logger')
+const uuid = require('uuid/v4')
 
 const handleStudents = async (request, response) => {
   const { caller } = request.token
@@ -9,9 +10,10 @@ const handleStudents = async (request, response) => {
   const url = request.url
   const username = url.split('/')[2]
   const action = url.split('/')[3]
+  const id = uuid()
 
   if (name) {
-    logger('info', ['api', 'students', 'search by name', 'caller', caller, 'start'])
+    logger('info', [id, 'api', 'students', 'search by name', 'caller', caller, 'start'])
     try {
       const teachers = await getData({ type: 'teacher', username: caller })
       const teacher = teachers[0]
@@ -21,27 +23,27 @@ const handleStudents = async (request, response) => {
         groupIds: { $in: teacher.groupIds }
       }
 
-      logger('info', ['api', 'students', 'search by name', name])
+      logger('info', [id, 'api', 'students', 'caller', caller, 'search by name', name])
       const data = await getData(query)
 
-      logger('info', ['api', 'students', 'search by name', 'data', data.length])
+      logger('info', [id, 'api', 'students', 'caller', caller, 'search by name', 'data', data.length])
 
       const students = data.map(student => {
         try {
           return repackStudent(student, teacher)
         } catch (error) {
-          logger('error', ['api', 'students', 'search by name', 'repack-student', student.username, error.message])
+          logger('error', [id, 'api', 'students', 'caller', caller, 'search by name', 'repack-student', student.username, error.message])
         }
       }).filter(student => typeof student !== 'undefined')
 
       response.json(students)
     } catch (error) {
-      logger('error', ['api', 'students', 'search by name', error.message])
+      logger('error', [id, 'api', 'students', 'caller', caller, 'search by name', error.message])
       response.status(500)
       response.json(error)
     }
   } else if (username && !action) {
-    logger('info', ['api', 'students', 'search by username', username, 'caller', caller, 'start'])
+    logger('info', [id, 'api', 'students', 'caller', caller, 'search by username', username, 'caller', caller, 'start'])
     try {
       const teachers = await getData({ type: 'teacher', username: caller })
       const teacher = teachers[0]
@@ -59,7 +61,7 @@ const handleStudents = async (request, response) => {
       const myStudents = data.filter(isMyStudent)
       response.json(myStudents.map(student => repackStudent(student, teacher)))
     } catch (error) {
-      logger('error', ['api', 'students', 'search by username', error.message])
+      logger('error', [id, 'api', 'students', 'caller', caller, 'search by username', error.message])
       response.status(500)
       response.json(error)
     }
@@ -97,7 +99,7 @@ const handleStudents = async (request, response) => {
       }, [])
       response.json(teachers)
     } catch (error) {
-      logger('error', ['api', 'students', 'student contactteachers', error.message])
+      logger('error', [id, 'api', 'students', 'caller', caller, 'student contactteachers', error.message])
       response.status(500)
       response.json(error)
     }
