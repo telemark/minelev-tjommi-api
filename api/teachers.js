@@ -48,7 +48,8 @@ const handleTeachers = async (request, response) => {
       }
       // TODO: Implement a way to filter out contactclasses
       const groups = await getData(groupQuery)
-      response.json(groups)
+      const contactGroups = groups.filter(group => group.type === 'basisgruppe').map(group => ({ Id: group.groupId }))
+      response.json(contactGroups)
     } catch (error) {
       logger('info', [id, 'api', 'teachers', username, 'error', error.message])
       response.status(500)
