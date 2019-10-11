@@ -13,17 +13,27 @@ const handleStudents = async (request, response) => {
   const id = uuid()
 
   if (name) {
-    logger('info', [id, 'api', 'students', 'search by name', 'caller', caller, 'start'])
+    logger('info', [id, 'api', 'students', 'search by name', 'caller', caller, 'search by name', name])
+
     try {
       const teachers = await getData({ type: 'teacher', username: caller })
       const teacher = teachers[0]
+
+      if (!teacher || !teacher.groupIds || teacher.groupIds.length === 0) {
+        logger('warn', [id, 'api', 'students', 'caller', caller, 'search by name', 'teacher has no groups'])
+
+        response.json([])
+        return
+      } else {
+        logger('warn', [id, 'api', 'students', 'caller', caller, 'search by name', 'test'])
+      }
+
       const query = {
         type: 'student',
         fullName: { $regex: name.replace('*', '.*'), $options: 'i' },
         groupIds: { $in: teacher.groupIds }
       }
 
-      logger('info', [id, 'api', 'students', 'caller', caller, 'search by name', name])
       const data = await getData(query)
 
       logger('info', [id, 'api', 'students', 'caller', caller, 'search by name', 'data', data.length])
