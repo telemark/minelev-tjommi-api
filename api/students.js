@@ -29,10 +29,10 @@ const handleStudents = async (request, response) => {
       const students = data.map(student => {
         try {
           return repackStudent(student, teacher)
-        } catch(error) {
+        } catch (error) {
           logger('error', ['api', 'students', 'search by name', 'repack-student', student.username, error.message])
         }
-      }).filter(student => typeof student !== "undefined")
+      }).filter(student => typeof student !== 'undefined')
 
       response.json(students)
     } catch (error) {
