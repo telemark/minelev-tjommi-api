@@ -25,7 +25,16 @@ const handleStudents = async (request, response) => {
       const data = await getData(query)
 
       logger('info', ['api', 'students', 'search by name', 'data', data.length])
-      response.json(data.map(student => repackStudent(student, teacher)))
+
+      const students = data.map(student => {
+        try {
+          return repackStudent(student, teacher)
+        } catch(error) {
+          logger('error', ['api', 'students', 'search by name', 'repack-student', student.username, error.message])
+        }
+      }).filter(student => typeof student !== "undefined")
+
+      response.json(students)
     } catch (error) {
       logger('error', ['api', 'students', 'search by name', error.message])
       response.status(500)
