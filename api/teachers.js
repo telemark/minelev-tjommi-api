@@ -43,6 +43,14 @@ const handleTeachers = async (request, response) => {
     try {
       const teachers = await getData(teacherQuery)
       const teacher = teachers[0]
+
+      if (!teacher || !teacher.groupIds || teacher.groupIds.length === 0) {
+        logger('warn', [id, 'api', 'teachers', username, 'contactclasses', 'teacher has no groups'])
+
+        response.json([])
+        return
+      }
+
       const groupQuery = {
         memberIds: teacher.id
       }
