@@ -24,8 +24,6 @@ const handleStudents = async (request, response) => {
         teacherQuery.username = caller
       }
 
-      console.log(teacherQuery)
-
       const teachers = await getData(teacherQuery)
       const teacher = teachers[0]
 
