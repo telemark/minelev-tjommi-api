@@ -19,10 +19,12 @@ const handleStudents = async (request, response) => {
       // If caller is an email/UPN, check mail field instead of username
       const teacherQuery = { type: 'teacher' }
       if (caller.includes('@')) {
-        teacherQuery.mail = caller
+        teacherQuery.email = caller
       } else {
         teacherQuery.username = caller
       }
+
+      console.log(teacherQuery)
 
       const teachers = await getData(teacherQuery)
       const teacher = teachers[0]
@@ -64,7 +66,7 @@ const handleStudents = async (request, response) => {
       // If caller is an email/UPN, check mail field instead of username
       const teacherQuery = { type: 'teacher' }
       if (caller.includes('@')) {
-        teacherQuery.mail = caller
+        teacherQuery.email = caller
       } else {
         teacherQuery.username = caller
       }
