@@ -16,7 +16,15 @@ const handleStudents = async (request, response) => {
     logger('info', [id, 'api', 'students', 'search by name', 'caller', caller, 'search by name', name])
 
     try {
-      const teachers = await getData({ type: 'teacher', username: caller })
+      // If caller is an email/UPN, check mail field instead of username
+      const teacherQuery = { type: 'teacher' }
+      if (caller.includes('@')) {
+        teacherQuery.mail = caller
+      } else {
+        teacherQuery.username = caller
+      }
+
+      const teachers = await getData(teacherQuery)
       const teacher = teachers[0]
 
       if (!teacher || !teacher.groupIds || teacher.groupIds.length === 0) {
@@ -24,8 +32,6 @@ const handleStudents = async (request, response) => {
 
         response.json([])
         return
-      } else {
-        logger('warn', [id, 'api', 'students', 'caller', caller, 'search by name', 'test'])
       }
 
       const query = {
@@ -55,7 +61,15 @@ const handleStudents = async (request, response) => {
   } else if (username && !action) {
     logger('info', [id, 'api', 'students', 'caller', caller, 'search by username', username, 'caller', caller, 'start'])
     try {
-      const teachers = await getData({ type: 'teacher', username: caller })
+      // If caller is an email/UPN, check mail field instead of username
+      const teacherQuery = { type: 'teacher' }
+      if (caller.includes('@')) {
+        teacherQuery.mail = caller
+      } else {
+        teacherQuery.username = caller
+      }
+
+      const teachers = await getData(teacherQuery)
       const teacher = teachers[0]
       const teachersGroups = new Set(teacher.groupIds)
       const query = {
