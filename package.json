@@ -1,6 +1,6 @@
 {
   "name": "minelev-tjommi-api",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Buddy compatible api service for MinElev",
   "main": "index.js",
   "scripts": {
