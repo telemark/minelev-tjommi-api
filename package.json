@@ -38,7 +38,7 @@
     "winston-papertrail": "1.0.5"
   },
   "devDependencies": {
-    "ava": "2.4.0",
+    "ava": "3.0.0",
     "axios": "0.19.1",
     "coveralls": "3.0.9",
     "dotenv": "8.2.0",
