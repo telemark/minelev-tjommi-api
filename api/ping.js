@@ -1,3 +1,3 @@
-module.exports = (request, response) => { 
-  response.json({"ping": "pong"}) 
+module.exports = (request, response) => {
+  response.json({ ping: 'pong' })
 }
