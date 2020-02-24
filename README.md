@@ -69,6 +69,10 @@ Get all teachers for a given school
 
 Get all students for a given school
 
+### ```Get /ping```
+
+Returns pong
+
 ## Development
 
 Add a local `.env` file

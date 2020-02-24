@@ -59,6 +59,10 @@
       "dest": "/api/teachers.js"
     },
     {
+      "src": "/ping",
+      "dest": "/api/ping.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/README.html"
     }
