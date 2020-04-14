@@ -31,7 +31,7 @@
   "homepage": "https://github.com/telemark/minelev-tjommi-api#readme",
   "dependencies": {
     "jsonwebtoken": "8.5.1",
-    "mongodb": "3.5.3",
+    "mongodb": "3.5.6",
     "tfk-schools-info": "2.2.0",
     "uuid": "3.4.0",
     "winston": "2.4.4",
